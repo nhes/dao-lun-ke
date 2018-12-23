@@ -1,0 +1,45 @@
+
+
+f=open('C:\\Users\\matebook\\Desktop\\123.txt','r')
+data=f.read()
+
+
+count = 7
+numnow = 0
+list=[]
+for ii in data:
+    if(count<0):
+        list.append((numnow).to_bytes(length=1, byteorder='big'))
+        numnow=0
+        count=7
+    if(ii=='1'):
+        numnow=numnow+2**count
+    if(ii!='\n'):
+        count=count-1
+
+
+
+
+nn=0
+
+import serial
+import time
+num=8
+try:
+   port=serial.Serial(port='COM11', baudrate=9600)#, bytesize=8, parity='E', stopbits=1, timeout=2)
+except:
+   print("failed to connect on COM11")
+
+while True:
+   port.readline()
+   for i in range(48):
+       port.write(list[nn])
+       nn+=1
+
+
+
+
+
+
+
+
