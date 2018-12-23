@@ -1,0 +1,188 @@
+int latchPin1=5;//yin ji
+int clockPin1=6;
+int dataPin1=7;
+int latchPin2=11;//yin ji
+int clockPin2=12;
+int dataPin2=13;
+
+
+int dataPin11=4;//yang ji
+int clockPin11=3;
+int latchPin11=2;
+int dataPin22=10;//yang ji
+int clockPin22=9;
+int latchPin22=8;
+
+int count=0;
+
+
+int timenow;
+
+
+int num[49];
+int sum;
+
+
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(latchPin1,OUTPUT);
+  pinMode(clockPin1,OUTPUT);
+  pinMode(dataPin1,OUTPUT);
+  pinMode(latchPin2,OUTPUT);
+  pinMode(clockPin2,OUTPUT);
+  pinMode(dataPin2,OUTPUT);
+    pinMode(latchPin11,OUTPUT);
+  pinMode(clockPin11,OUTPUT);
+  pinMode(dataPin11,OUTPUT);
+    pinMode(latchPin22,OUTPUT);
+  pinMode(clockPin22,OUTPUT);
+  pinMode(dataPin22,OUTPUT);
+delay(1000);
+}
+
+void loop() {
+  Serial.println(1);//jie shou shu jv
+sum=0;
+  while(Serial.available()>0&&sum<48)
+  {
+    num[sum]=Serial.read();
+    sum=sum+1;
+    }
+
+
+
+while(1)
+{
+
+if(millis()-timenow>55)
+{
+  timenow=millis();
+break;
+}
+
+ digitalWrite(latchPin11,LOW); //di yi zu fang zhen
+ for(int i =7;i>=0;i--)
+  {
+    digitalWrite(clockPin11,LOW);
+    if(i==count)
+    digitalWrite(dataPin11,HIGH);
+    else
+    digitalWrite(dataPin11,LOW);
+    digitalWrite(clockPin11,HIGH);
+  }
+
+
+
+
+
+
+    digitalWrite(latchPin1,LOW); 
+    for(int i =0;i<=7;i++)
+  {
+    digitalWrite(clockPin1,LOW);
+    if(num[count*3+2]&(1<<i))
+    digitalWrite(dataPin1,HIGH);
+    else
+    digitalWrite(dataPin1,LOW);
+    digitalWrite(clockPin1,HIGH);
+  }
+  for(int i =0;i<=7;i++)
+  {
+    digitalWrite(clockPin1,LOW);
+    if(num[count*3+1]&(1<<i))
+    digitalWrite(dataPin1,HIGH);
+    else
+    digitalWrite(dataPin1,LOW);
+    digitalWrite(clockPin1,HIGH);
+  }
+  for(int i =0;i<=7;i++)
+  {
+    digitalWrite(clockPin1,LOW);
+   if(num[count*3]&(1<<i))
+    digitalWrite(dataPin1,HIGH);
+    else
+    digitalWrite(dataPin1,LOW);
+    digitalWrite(clockPin1,HIGH);
+  }
+  
+     digitalWrite(latchPin1,HIGH);
+     digitalWrite(latchPin11,HIGH);
+
+
+
+
+
+digitalWrite(latchPin22,LOW);//di er zu fang zhen
+ for(int i =7;i>=0;i--)
+  {
+    digitalWrite(clockPin22,LOW);
+    if(i==count)
+    digitalWrite(dataPin22,HIGH);
+    else
+    digitalWrite(dataPin22,LOW);
+    digitalWrite(clockPin22,HIGH);
+  }
+
+
+
+
+
+
+    digitalWrite(latchPin2,LOW);   
+
+     for(int i =0;i<=7;i++)
+  {
+    digitalWrite(clockPin2,LOW);
+    if(num[count*3+26]&(1<<i))
+    digitalWrite(dataPin2,HIGH);
+    else
+    digitalWrite(dataPin2,LOW);
+    digitalWrite(clockPin2,HIGH);
+  }
+  for(int i =0;i<=7;i++)
+  {
+    digitalWrite(clockPin2,LOW);
+    if(num[count*3+25]&(1<<i))
+    digitalWrite(dataPin2,HIGH);
+    else
+    digitalWrite(dataPin2,LOW);
+    digitalWrite(clockPin2,HIGH);
+  }
+  for(int i =0;i<=7;i++)
+  {
+    digitalWrite(clockPin2,LOW);
+   if(num[count*3+24]&(1<<i))
+    digitalWrite(dataPin2,HIGH);
+    else
+    digitalWrite(dataPin2,LOW);
+    digitalWrite(clockPin2,HIGH);
+  }
+  
+     digitalWrite(latchPin2,HIGH);
+     digitalWrite(latchPin22,HIGH);
+     
+   delay(2);
+   
+  count=(count+1)%8;
+
+
+
+
+
+
+   
+}
+   
+
+
+
+
+  
+      
+
+
+}
+
+
+
