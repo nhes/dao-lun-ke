@@ -1,0 +1,22 @@
+import ftplib
+host=''
+username=''
+password=''
+f=ftplib.FTP()
+f.connect(host,21)
+f.login(username,password)
+f.set_pasv(False)
+pwd_path=f.pwd()
+print(pwd_path)
+f.cwd('pub')
+
+fp=open('C:\\Users\\matebook\\Desktop\\我的作品2.mp4','rb')
+f.set_pasv(True)
+f.storbinary('STOR 1.mp4',fp,1024)
+f.set_debuglevel(0)
+f.close()
+fp.close()
+
+
+
+
