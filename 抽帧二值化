@@ -1,0 +1,76 @@
+import cv2
+import serial
+import time
+import os
+
+
+try:
+    picfile=os.listdir("C:\\Users\\matebook\\Desktop\\ceshi")
+    for picture in picfile:
+        os.remove("C:\\Users\\matebook\\Desktop\\ceshi\\"+picture)
+except:
+    print("no picture")
+
+
+
+f=open('C:\\Users\\matebook\\Desktop\\123.txt','w')
+
+videoCapture = cv2.VideoCapture()
+videoCapture.open('C:\\Users\\matebook\\Desktop\\1\\1.mp4')
+
+fps = videoCapture.get(cv2.CAP_PROP_FPS)
+frames = videoCapture.get(cv2.CAP_PROP_FRAME_COUNT)
+
+
+if int(frames)>5004:
+    framenum=1668
+else:
+    framenum=int(frames/3)
+for i in range(framenum):
+    ret,frame = videoCapture.read()
+    ret,frame = videoCapture.read()
+    ret,frame = videoCapture.read()
+    cv2.imwrite("C:\\Users\\matebook\\Desktop\\ceshi\\1-1.avi(%d).jpg"%i,frame)
+
+
+
+
+from PIL import Image
+for i in range(framenum):
+    try:
+        img=Image.open("C:\\Users\\matebook\\Desktop\\ceshi\\1-1.avi(%d).jpg"%i)
+    except:
+        print("open error")
+
+    width=img.size[0]
+    height=img.size[1]
+    n_lenth=int(height/16)
+    img_array=img.load()
+    if (24*n_lenth<=width):
+        add = int((width - 24*n_lenth) / 2)
+        for j in range(16):
+           for k in range(24):
+               if (img_array[k*n_lenth+add,j*n_lenth][0]+img_array[k*n_lenth+add,j*n_lenth][1]+img_array[k*n_lenth+add,j*n_lenth][2])/3>=127:
+                   f.write('0')
+               else:
+                   f.write('1')
+        f.write('\n')
+
+    if (24*n_lenth>width):
+        add=int((24*n_lenth-width)/2)
+        for j in range(16):
+            for k in range(24):
+                if  (k*n_lenth-add)>=0 and (k*n_lenth-add)<width-1:
+                    if (img_array[k * n_lenth-add, j * n_lenth][0] + img_array[k * n_lenth-add, j * n_lenth][1] +img_array[k * n_lenth-add, j * n_lenth][2])/3 >= 127:
+                        f.write('0')
+                    else:
+                        f.write('1')
+                else:
+                    f.write('1')
+        f.write('\n')
+
+f.close()
+
+
+
+
